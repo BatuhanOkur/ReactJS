@@ -1,7 +1,13 @@
-function TaskList() {
+import Task from './Task'
+
+function TaskList({taskList, onDelete, onUpdate}) {
     return ( 
-        <div>
-            
+        <div className='taskListDiv'>
+            {taskList.map((task, index) =>{
+               return(
+                <Task key={index} task={task} onDelete={onDelete} onUpdate={onUpdate}/>
+               ); 
+            })}
         </div>
      );
 }
