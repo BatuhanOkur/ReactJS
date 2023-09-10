@@ -22,13 +22,14 @@ function App() {
   const [count, dispatch] = useReducer(reducer, initialValue);
 
   return (
+
     <>
       <span>Sayı : {count}</span>
       <button onClick={() =>{dispatch('increment')}}>Arttır</button>
       <button onClick={() =>{dispatch('decrement')}}>Azalt</button>
       <button onClick={() =>{dispatch('reset')}}>Sıfırla</button>
     </>
-  )
+  );
 }
 
 export default App
