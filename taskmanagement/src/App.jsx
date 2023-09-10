@@ -3,25 +3,39 @@
 import './App.css'
 import TaskCreate from './components/TaskCreate'
 import TaskList from './components/TaskList'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
+import axios from 'axios';
 
 function App() {
-  const [tasks, setTasks] = useState([])
-  const createTask = (title, desc) => {
+  const [tasks, setTasks] = useState([]);
+
+  const createTask = async (title, desc) => {
     if(title == '' || desc == '')
     {
       alert("Başlık ve içerik dolu olmalıdır.");
     }else{
-      const createdTasks = [...tasks, {
-        id: Math.round(Math.random()*999999),
+      const response = await axios.post('http://localhost:3000/tasks', 
+      {
         title,
         desc
-      }]
+      });
+      console.log(response);
+      const createdTasks = [...tasks, response.data]
       setTasks(createdTasks);
     }
   };
 
-  const deleteTaskByID = (id) =>{
+  const fetchTask = async () =>{
+    const response = await axios.get('http://localhost:3000/tasks');
+    setTasks(response.data);
+  }
+
+  useEffect(() =>{
+    fetchTask();    
+  },[])
+
+  const deleteTaskByID = async (id) =>{
+    await axios.delete(`http://localhost:3000/tasks/${id}`);
     const afterDeletedTasks = tasks.filter((task) => {
       return task.id !== id 
     })
@@ -29,7 +43,13 @@ function App() {
     setTasks(afterDeletedTasks);
   };
 
-  const editTaskByID = (id, utitle, udesc) => {
+  const editTaskByID = async (id, utitle, udesc) => {
+    await axios.put(`http://localhost:3000/tasks/${id}`,
+    {
+      title:utitle,
+      desc:udesc
+    });
+    
     const updatedTasks = tasks.map((task) => {
       if(task.id == id){
         return {id, title: utitle, desc: udesc};
