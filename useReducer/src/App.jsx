@@ -1,6 +1,9 @@
-import { useReducer } from 'react'
+import React,{ useReducer } from 'react'
+
+export const NumberContext = React.createContext();
 
 import './App.css'
+import Calculate from './Calculate';
 const initialValue = 0;
 
 const reducer = (state, action) => {
@@ -24,10 +27,9 @@ function App() {
   return (
 
     <>
-      <span>Sayı : {count}</span>
-      <button onClick={() =>{dispatch('increment')}}>Arttır</button>
-      <button onClick={() =>{dispatch('decrement')}}>Azalt</button>
-      <button onClick={() =>{dispatch('reset')}}>Sıfırla</button>
+      <NumberContext.Provider value={{count: count, dispatch:dispatch}}>
+        <Calculate/>
+      </NumberContext.Provider>
     </>
   );
 }
