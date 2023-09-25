@@ -8,6 +8,8 @@ import WrongPath from './components/WrongPath'
 import History from './components/History'
 import OurCompanies from './components/OurCompanies'
 import Team from './components/Team'
+import Users from './components/Users'
+import UserDetails from './components/UserDetails'
 
 function App() {
   
@@ -23,6 +25,8 @@ function App() {
           <Route path='our-companies' element={<OurCompanies/>}/>
           <Route path='team' element={<Team/>}/>
         </Route>
+        <Route path='/users' element={<Users/>}/>
+        <Route path='/users/:userId' element={<UserDetails/>}/>
         <Route path='*' element={<WrongPath/>} />
       </Routes>
     </>
