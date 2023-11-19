@@ -1,18 +1,32 @@
 import {useFormik} from 'formik';
+import { basicSchema } from '../schemas';
+
+const onSubmit = async (values, actions) => {
+  console.log(values);
+  console.log(actions);
+
+  await new Promise((resolve) =>{
+    setTimeout(resolve,1000);
+  })
+
+  actions.resetForm();
+}
 
 export default function Main() {
-  const {values, errors, handleChange, handleSubmit} = useFormik({
+  const {values, errors, isSubmitting, handleChange, handleSubmit} = useFormik({
     initialValues:{
       email: '',
       age:'',
       password:'',
       confirmPassword:''
     },
+    validationSchema:basicSchema,
+    onSubmit,
   })
 
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className='inputDiv'>
           <label>Email</label>
           <input type="email" 
@@ -20,7 +34,9 @@ export default function Main() {
           id="email" 
           placeholder="Mail adresinizi giriniz..." 
           onChange={handleChange}
+          className={errors.email ? 'input-error' : ''}
           />
+          {errors.email && <p className='error'>{errors.email}</p>}
         </div>
         <div className='inputDiv'>
           <label>Yaş</label>
@@ -29,7 +45,9 @@ export default function Main() {
           id="age" 
           placeholder="Yaşınızı giriniz..." 
           onChange={handleChange}
+          className={errors.age ? 'input-error' : ''}
           />
+          {errors.age && <p className='error'>{errors.age}</p>}
         </div>
         <div className='inputDiv'>
           <label>Şifre</label>
@@ -38,7 +56,9 @@ export default function Main() {
           id="password" 
           placeholder="Şifre giriniz..." 
           onChange={handleChange}
+          className={errors.password ? 'input-error' : ''}
           />
+          {errors.password && <p className='error'>{errors.password}</p>}
         </div>
         <div className='inputDiv'>
           <label>Şifre Tekrar</label>
@@ -47,9 +67,11 @@ export default function Main() {
           id="confirmPassword" 
           placeholder="Şifrenizi tekrar giriniz..." 
           onChange={handleChange}
+          className={errors.confirmPassword ? 'input-error' : ''}
           />
+          {errors.confirmPassword && <p className='error'>{errors.confirmPassword}</p>}
         </div>
-        <button type='submit'>Kaydet</button>
+        <button disabled={isSubmitting} type='submit'>Kaydet</button>
       </form>
     </>
   )
